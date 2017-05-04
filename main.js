@@ -5,34 +5,37 @@ const {app, BrowserWindow} = require('electron')
 const path = require('path')
 const url = require('url')
 
-let win;
+var devCMS
 
 function createWindow () {
+  var url = '';
   win = new BrowserWindow({width: 800, height: 600})
-
-  win.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
 
   if (dev) {
     //Set up dev environment
     win.webContents.openDevTools()
 
     var express = require('express')
-    var app = express()
+    var CMS = express()
 
-    app.get('/CMSwindow', function (req, res) {
+    CMS.get('/CMSwindow', function (req, res) {
       res.sendFile(__dirname + '/localApp.json')
     })
 
-    app.listen(3000, function () {
+    devCMS = CMS.listen(3000, function () {
       console.log('Server listening on port 3000')
     })
+
+    url = 'http://localhost:3000/CMSwindow';
+  }
+  else {
+    url = 'http://google.com';
   }
 
+  win.loadURL(`file://${__dirname}/index.html`)
+
   win.on('closed', () => {
+    if (dev) devCMS.close();
     win = null
   })
 }

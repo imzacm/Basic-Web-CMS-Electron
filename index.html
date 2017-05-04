@@ -26,18 +26,14 @@
                     style += css;
                 });
                 child.style = style;
-            };
-
-            var childElement = '';
-            if (child.type === "script" || !child.style) {
-                childElement = '<' + child.type + ' id="' + elementCount + '"' + '>';
-            }
-            else if (child.style) {
-                childElement = '<' + child.type + ' id="' + elementCount + '" style="' + child.style + '"' + '>';
             }
 
+            var childElement = '<' + child.type + ' id="' + elementCount + '"';
+            if (child.style) childElement += ' style="' + style + '"';
+            childElement += '>';
             if (child.text) childElement += child.text;
             childElement += '</' + child.type + '>';
+            
             $(parent).append(childElement);
 
             var parentId = $('#' + elementCount);
