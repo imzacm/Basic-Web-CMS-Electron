@@ -1,0 +1,33 @@
+{
+    "head": {
+        "title": "localApp"
+    },
+    "header": {
+        "type": "div",
+        "contents": [
+            {
+                "type": "h1",
+                "text": "localApp",
+                "style": [
+                    "color: blue;"
+                ]
+            },
+            {
+                "type": "h2",
+                "text": "Served locally",
+                "style": [
+                    "color: yellow;"
+                ]
+            },
+            {
+                "type": "script",
+                "text": "console.log('Node version = ' + process.version);"
+            }
+        ],
+        "style": [
+            "border-style: solid;",
+            "border-width: 2px",
+            "border-color: red"
+        ]
+    }
+}

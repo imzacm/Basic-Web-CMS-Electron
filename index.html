@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>ZTerm</title>
+    <script>
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
+    <script src="libs/jquery-1.4.4.js"></script>
+    <script>
+        if (window.module) {
+            module = window.module;
+        }
+        var elementCount = 0;
+
+        function addElement (child, parent) {
+            elementCount++;
+            console.log('child = ' + JSON.stringify(child));
+            console.log('element count = ' + elementCount);
+
+            var childElement = '';
+            if (child.type === "script") {
+                childElement = '<' + child.type + ' id="' + elementCount + '"' + '>';
+            }
+            else {
+                childElement = '<' + child.type + ' id="' + elementCount + '" style="' + child.style + '"' + '>';
+            }
+
+            if (child.text) childElement += child.text;
+            childElement += '</' + child.type + '>';
+            $(parent).append(childElement);
+
+            var parentId = $('#' + elementCount);
+            if (child.contents) child.contents.forEach (function(element) {
+                addElement(element, parentId);
+            });
+        }
+    </script>
+  </head>
+  <body>
+        <script>
+            $(function() {
+                $.get('http://localhost:3000/CMSwindow', (data) => {
+                    console.log(JSON.stringify(data));
+                    if (data) {
+                        if (data.head && data.head.title) {
+                            document.title = data.head.title;
+                        }
+                        if (data.header) {
+                            addElement(data.header, document.body);
+                        }
+                    }
+                });
+            });
+        </script>
+  </body>
+</html>
