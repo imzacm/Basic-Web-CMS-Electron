@@ -15,15 +15,24 @@
         var elementCount = 0;
 
         function addElement (child, parent) {
+            if (!child.type) return;
             elementCount++;
             console.log('child = ' + JSON.stringify(child));
             console.log('element count = ' + elementCount);
 
+            if (child.style) {
+                var style = '';
+                child.style.forEach(function(css) {
+                    style += css;
+                });
+                child.style = style;
+            };
+
             var childElement = '';
-            if (child.type === "script") {
+            if (child.type === "script" || !child.style) {
                 childElement = '<' + child.type + ' id="' + elementCount + '"' + '>';
             }
-            else {
+            else if (child.style) {
                 childElement = '<' + child.type + ' id="' + elementCount + '" style="' + child.style + '"' + '>';
             }
 
@@ -49,6 +58,12 @@
                         }
                         if (data.header) {
                             addElement(data.header, document.body);
+                        }
+                        if (data.main) {
+                            addElement(data.main, document.body);
+                        }
+                        if (data.footer) {
+                            addElement(data.footer, document.body);
                         }
                     }
                 });
